@@ -1,3 +1,4 @@
+// ignore: file_names
 class ApiConstants {
   static String baseUrl =
       'http://616d6bdb6dacbb001794ca17.mockapi.io/devnology';

@@ -18,21 +18,18 @@ class ApiService {
     } catch (e) {
       log(e.toString());
     }
-
-    Future<List<EuropeanProductOk>?> getEuropeanProductOK() async {
-      try {
-        var url =
-            Uri.parse(ApiConstants.baseUrl + ApiConstants.europeanEndpoint);
-        var response = await http.get(url);
-        if (response.statusCode == 200) {
-          List<EuropeanProductOk> _model = europeanModelFromJson(response.body);
-          return _model;
-        }
-      } catch (e) {
-        log(e.toString());
-      }
-    }
   }
 
-  getEuropeanProductOK() {}
+  Future<List<EuropeanProductOk>?> getEuropeanProductOK() async {
+    try {
+      var url = Uri.parse(ApiConstants.baseUrl + ApiConstants.europeanEndpoint);
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        List<EuropeanProductOk> _model = europeanModelFromJson(response.body);
+        return _model;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }

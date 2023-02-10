@@ -107,8 +107,8 @@ class _TrendingProductsState extends State<TrendingProducts> {
                     ),
                     Text(
                       widget.products.title,
-                      style:
-                          const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(
                       height: 10,

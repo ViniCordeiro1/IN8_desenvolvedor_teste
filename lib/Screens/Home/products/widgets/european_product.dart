@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_web/constants.dart';
-import 'package:flutter_ecommerce_web/model/european_model.dart';
+import 'package:flutter_ecommerce_web/model/api_service.dart';
+import 'package:flutter_ecommerce_web/model/european_model_ok.dart';
+import 'package:flutter_ecommerce_web/responsive.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class EuropeanProductCard extends StatelessWidget {
-  const EuropeanProductCard({
-    Key? key,
-  }) : super(key: key);
+class EuropeanProductCard extends StatefulWidget {
+  const EuropeanProductCard({Key? key}) : super(key: key);
+
+  @override
+  State<EuropeanProductCard> createState() => _EuropeanProductCardState();
+}
+
+class _EuropeanProductCardState extends State<EuropeanProductCard> {
+  late List<EuropeanProductOk>? _europeanProducts = [];
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  void _getData() async {
+    _europeanProducts = (await ApiService().getEuropeanProductOK())!;
+    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +33,10 @@ class EuropeanProductCard extends StatelessWidget {
       shrinkWrap: true,
       physics: const ScrollPhysics(),
       crossAxisCount: 4,
-      itemCount: europeanProducts.length,
-      itemBuilder: (BuildContext context, int index) => EuropeanProducts(
+      itemCount: _europeanProducts?.length,
+      itemBuilder: (BuildContext context, int index) => TrendingProducts2(
         press: () {},
-        europeanProducts: europeanProducts[index],
+        products2: _europeanProducts![index],
       ),
       staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
       mainAxisSpacing: 10.0,
@@ -28,10 +45,11 @@ class EuropeanProductCard extends StatelessWidget {
   }
 }
 
-class MobEuropeanProductCard extends StatelessWidget {
-  const MobEuropeanProductCard({
-    Key? key,
-  }) : super(key: key);
+class MobiEuropeanProductCard extends StatelessWidget {
+  const MobiEuropeanProductCard({Key? key, required this.europeanProducts})
+      : super(key: key);
+
+  final List<EuropeanProductOk> europeanProducts;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +59,9 @@ class MobEuropeanProductCard extends StatelessWidget {
       physics: const ScrollPhysics(),
       crossAxisCount: 2,
       itemCount: europeanProducts.length,
-      itemBuilder: (BuildContext context, int index) => EuropeanProducts(
+      itemBuilder: (BuildContext context, int index) => TrendingProducts2(
         press: () {},
-        europeanProducts: europeanProducts[index],
+        products2: europeanProducts[index],
       ),
       staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
       mainAxisSpacing: 10.0,
@@ -52,21 +70,20 @@ class MobEuropeanProductCard extends StatelessWidget {
   }
 }
 
-// ignore: camel_case_types
-class EuropeanProducts extends StatefulWidget {
-  final EuropeanProduct europeanProducts;
+class TrendingProducts2 extends StatefulWidget {
+  final EuropeanProductOk products2;
   final VoidCallback press;
-  const EuropeanProducts({
+  const TrendingProducts2({
     Key? key,
-    required this.europeanProducts,
+    required this.products2,
     required this.press,
   }) : super(key: key);
 
   @override
-  State<EuropeanProducts> createState() => _EuropeanProductsState();
+  State<TrendingProducts2> createState() => _TrendingProducts2State();
 }
 
-class _EuropeanProductsState extends State<EuropeanProducts> {
+class _TrendingProducts2State extends State<TrendingProducts2> {
   bool isHover = false;
   @override
   Widget build(BuildContext context) {
@@ -92,17 +109,14 @@ class _EuropeanProductsState extends State<EuropeanProducts> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    Image.asset(
-                      widget.europeanProducts.image,
+                    Image.network(
+                      widget.products2.gallery[1],
                       height: 150,
                       width: 150,
                       fit: BoxFit.contain,
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
                     Text(
-                      widget.europeanProducts.title,
+                      widget.products2.name,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.w600),
                     ),
@@ -110,7 +124,7 @@ class _EuropeanProductsState extends State<EuropeanProducts> {
                       height: 10,
                     ),
                     Text(
-                      "\$${widget.europeanProducts.price}",
+                      "\$${widget.products2.price}",
                       style: const TextStyle(
                         fontSize: 16,
                       ),
@@ -156,5 +170,49 @@ class _EuropeanProductsState extends State<EuropeanProducts> {
             ],
           ),
         ));
+  }
+}
+
+class EuropeanSection extends StatelessWidget {
+  const EuropeanSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            constraints: const BoxConstraints(maxWidth: kMaxWidth),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          bottom:
+                              BorderSide(color: kSecondaryColor, width: 3))),
+                  child: const Text(
+                    "European Products",
+                    style: TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                if (Responsive.isDesktop(context)) const EuropeanProductCard(),
+                if (!Responsive.isDesktop(context))
+                  const MobiEuropeanProductCard(
+                    europeanProducts: [],
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -3,8 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_web/Screens/Home/widgets/banner.dart';
 import 'package:flutter_ecommerce_web/constants.dart';
-import 'package:flutter_ecommerce_web/model/api_service.dart';
-import 'package:flutter_ecommerce_web/model/brazilian_model_ok.dart';
 
 import 'products/product_section.dart';
 import 'widgets/bottomnav.dart';
@@ -18,19 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late List<BrazilianProductOk>? _brazilianProducts = [];
-  @override
-  void initState() {
-    super.initState();
-    _getData();
-  }
-
-  void _getData() async {
-    _brazilianProducts = (await ApiService().getBrazilianProductOK())!;
-    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
-    print(_brazilianProducts?[0]);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

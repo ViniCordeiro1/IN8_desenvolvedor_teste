@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
 
 List<EuropeanProductOk> europeanModelFromJson(String str) =>
@@ -9,24 +8,18 @@ String europeanModelToJson(List<EuropeanProductOk> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class EuropeanProductOk {
-  final String name,
-      gallery,
-      description,
-      price,
-      details,
-      adjective,
-      material,
-      id;
+  final String name, description, price, discountValue, id;
+  final bool hasDiscount;
+  final List<String> gallery;
 
   EuropeanProductOk({
     required this.name,
     required this.gallery,
     required this.description,
     required this.price,
-    required this.details,
-    required this.adjective,
-    required this.material,
+    required this.discountValue,
     required this.id,
+    required this.hasDiscount,
   });
 
   factory EuropeanProductOk.fromJson(Map<String, dynamic> json) =>
@@ -35,9 +28,8 @@ class EuropeanProductOk {
         gallery: json["gallery"],
         description: json["description"],
         price: json["price"],
-        details: json["details"],
-        adjective: json["adjective"],
-        material: json["material"],
+        discountValue: json["discountValue"],
+        hasDiscount: json["hasDiscount"],
         id: json["id"],
       );
 
@@ -46,9 +38,8 @@ class EuropeanProductOk {
         "gallery": gallery,
         "description": description,
         "price": price,
-        "details": details,
-        "adjective": adjective,
-        "material": material,
+        "discountValue": discountValue,
+        "hasDiscount": hasDiscount,
         "id": id,
       };
 }

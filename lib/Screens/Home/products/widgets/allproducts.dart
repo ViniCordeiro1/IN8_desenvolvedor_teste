@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce_web/Screens/Home/products/widgets/european_product.dart';
 import 'package:flutter_ecommerce_web/constants.dart';
 import 'package:flutter_ecommerce_web/responsive.dart';
 
-import 'european_product.dart';
 import 'all_products.dart';
 import 'brazilian_products.dart';
 
@@ -40,35 +40,34 @@ class _AllBrandsProductState extends State<AllBrandsProduct> {
                     text: "All",
                   ),
                   Tab(
-                    text: "Supplier 1",
+                    text: "Brazilian",
                   ),
                   Tab(
-                    text: "Supplier 2",
+                    text: "European",
                   ),
                 ]),
-            if (Responsive.isDesktop(context))
-              const SizedBox(
-                height: 350,
-                child: TabBarView(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 30),
-                      child: AllProductCard(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 30),
-                      child: BrazilianProductCard(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 30),
-                      child: EuropeanProductCard(),
-                    ),
-                  ],
-                ),
+            const SizedBox(
+              height: 900,
+              child: TabBarView(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 30),
+                    child: AllProductCard(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 30),
+                    child: BrazilianSection(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 30),
+                    child: EuropeanSection(),
+                  ),
+                ],
               ),
+            ),
             if (!Responsive.isDesktop(context))
               const SizedBox(
-                height: 600,
+                height: 900,
                 child: TabBarView(
                   children: [
                     Padding(
@@ -77,11 +76,13 @@ class _AllBrandsProductState extends State<AllBrandsProduct> {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 30),
-                      child: MobiBrazilianProductCard(),
+                      child: BrazilianProductCard(),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 30),
-                      child: MobEuropeanProductCard(),
+                      child: MobiEuropeanProductCard(
+                        europeanProducts: [],
+                      ),
                     ),
                   ],
                 ),

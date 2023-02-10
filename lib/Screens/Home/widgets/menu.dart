@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce_web/Screens/Products.dart';
+import 'package:flutter_ecommerce_web/Screens/Home/products/widgets/Products.dart';
 import 'package:flutter_ecommerce_web/constants.dart';
 import 'package:flutter_ecommerce_web/responsive.dart';
 
@@ -121,7 +121,7 @@ class WebMenu extends StatelessWidget {
             print('Foi para Produtos');
 
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const Products();
+              return const ProductsPage();
             }));
           },
         ),

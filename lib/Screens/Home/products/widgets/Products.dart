@@ -1,18 +1,19 @@
+// ignore: unused_import
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce_web/Screens/Home/home_screen.dart';
+import 'package:flutter_ecommerce_web/Screens/Home/products/widgets/allproducts.dart';
+import 'package:flutter_ecommerce_web/Screens/Home/widgets/bottomnav.dart';
+import 'package:flutter_ecommerce_web/Screens/Home/widgets/menu.dart';
 import 'package:flutter_ecommerce_web/constants.dart';
 
-import 'Home/products/widgets/allproducts.dart';
-import 'Home/widgets/menu.dart';
-
-class Products extends StatefulWidget {
-  const Products({Key? key}) : super(key: key);
+class ProductsPage extends StatefulWidget {
+  const ProductsPage({Key? key}) : super(key: key);
 
   @override
-  _ProductsState createState() => _ProductsState();
+  _ProductsPageState createState() => _ProductsPageState();
 }
 
-class _ProductsState extends State<Products> {
+class _ProductsPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,15 +42,9 @@ class _ProductsState extends State<Products> {
                     height: 10,
                   ),
                   MenuItems(
+                    isActive: true,
                     title: 'Home',
-                    press: () {
-                      print('Voltou para Home');
-
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const HomeScreen();
-                      }));
-                    },
+                    press: () {},
                   ),
                   const SizedBox(
                     height: 10,
@@ -83,9 +78,10 @@ class _ProductsState extends State<Products> {
           children: const [
             //now we create menu and header
             Navigation(),
+            AllBrandsProduct(),
             //now we create banner
             //for this import packages
-            AllBrandsProduct(),
+            BottomNav()
             //now we will make our site responsive
           ],
         ),

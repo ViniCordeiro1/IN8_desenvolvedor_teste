@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_web/constants.dart';
 import 'package:flutter_ecommerce_web/model/api_service.dart';
+import 'package:flutter_ecommerce_web/model/brazilian_model_ok.dart';
+import 'package:flutter_ecommerce_web/responsive.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class BrazilianProductCard extends StatelessWidget {
-  const BrazilianProductCard({
-    Key? key,
-  }) : super(key: key);
+class BrazilianProductCard extends StatefulWidget {
+  const BrazilianProductCard({Key? key}) : super(key: key);
+
+  @override
+  State<BrazilianProductCard> createState() => _BrazilianProductCardState();
+}
+
+class _BrazilianProductCardState extends State<BrazilianProductCard> {
+  late List<BrazilianProductOk>? _brazilianProducts = [];
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  void _getData() async {
+    _brazilianProducts = (await ApiService().getBrazilianProductOK())!;
+    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +33,10 @@ class BrazilianProductCard extends StatelessWidget {
       shrinkWrap: true,
       physics: const ScrollPhysics(),
       crossAxisCount: 4,
-      itemCount: brazilianProducts.length,
-      itemBuilder: (BuildContext context, int index) => ApiService(
+      itemCount: _brazilianProducts?.length,
+      itemBuilder: (BuildContext context, int index) => TrendingProducts(
         press: () {},
-        brazilianProducts: brazilianProducts[index],
+        products: _brazilianProducts![index],
       ),
       staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
       mainAxisSpacing: 10.0,
@@ -29,9 +46,10 @@ class BrazilianProductCard extends StatelessWidget {
 }
 
 class MobiBrazilianProductCard extends StatelessWidget {
-  const MobiBrazilianProductCard({
-    Key? key,
-  }) : super(key: key);
+  const MobiBrazilianProductCard({Key? key, required this.brazilianProducts})
+      : super(key: key);
+
+  final List<BrazilianProductOk> brazilianProducts;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +59,9 @@ class MobiBrazilianProductCard extends StatelessWidget {
       physics: const ScrollPhysics(),
       crossAxisCount: 2,
       itemCount: brazilianProducts.length,
-      itemBuilder: (BuildContext context, int index) => ApiService(
+      itemBuilder: (BuildContext context, int index) => TrendingProducts(
         press: () {},
-        brazilianProducts: brazilianProducts[index],
+        products: brazilianProducts[index],
       ),
       staggeredTileBuilder: (int index) => const StaggeredTile.fit(1),
       mainAxisSpacing: 10.0,
@@ -52,20 +70,20 @@ class MobiBrazilianProductCard extends StatelessWidget {
   }
 }
 
-class ApiService extends StatefulWidget {
-  final ApiService brazilianProducts;
+class TrendingProducts extends StatefulWidget {
+  final BrazilianProductOk products;
   final VoidCallback press;
-  const ApiService({
+  const TrendingProducts({
     Key? key,
-    required this.brazilianProducts,
+    required this.products,
     required this.press,
   }) : super(key: key);
 
   @override
-  State<ApiService> createState() => _ApiServiceState();
+  State<TrendingProducts> createState() => _TrendingProductsState();
 }
 
-class _ApiServiceState extends State<ApiService> {
+class _TrendingProductsState extends State<TrendingProducts> {
   bool isHover = false;
   @override
   Widget build(BuildContext context) {
@@ -92,16 +110,13 @@ class _ApiServiceState extends State<ApiService> {
                 child: Column(
                   children: [
                     Image.network(
-                      widget.brazilianProducts.imagem,
+                      widget.products.imagem,
                       height: 150,
                       width: 150,
                       fit: BoxFit.contain,
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
                     Text(
-                      widget.brazilianProducts.nome,
+                      widget.products.nome,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.w600),
                     ),
@@ -109,7 +124,7 @@ class _ApiServiceState extends State<ApiService> {
                       height: 10,
                     ),
                     Text(
-                      "\$${widget.brazilianProducts.preco}",
+                      "\$${widget.products.preco}",
                       style: const TextStyle(
                         fontSize: 16,
                       ),
@@ -155,5 +170,49 @@ class _ApiServiceState extends State<ApiService> {
             ],
           ),
         ));
+  }
+}
+
+class BrazilianSection extends StatelessWidget {
+  const BrazilianSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            constraints: const BoxConstraints(maxWidth: kMaxWidth),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          bottom:
+                              BorderSide(color: kSecondaryColor, width: 3))),
+                  child: const Text(
+                    "Brazilian Products",
+                    style: TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                if (Responsive.isDesktop(context)) const BrazilianProductCard(),
+                if (!Responsive.isDesktop(context))
+                  const MobiBrazilianProductCard(
+                    brazilianProducts: [],
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
