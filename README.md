@@ -1,4 +1,4 @@
-<h1 align="center">"center">IN8_desenvolvedor_teste</h1>
+<h1 align="center">IN8_desenvolvedor_teste</h1>
 
 <img src="assets/E-commerce.jpg">
 
