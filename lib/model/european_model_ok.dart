@@ -8,7 +8,7 @@ String europeanModelToJson(List<EuropeanProductOk> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class EuropeanProductOk {
-  final String name, description, price, discountValue, id;
+  final String name, description, price, discountValue, details, id;
   final bool hasDiscount;
   final List<String> gallery;
 
@@ -18,6 +18,7 @@ class EuropeanProductOk {
     required this.description,
     required this.price,
     required this.discountValue,
+    required this.details,
     required this.id,
     required this.hasDiscount,
   });
@@ -29,6 +30,7 @@ class EuropeanProductOk {
         description: json["description"],
         price: json["price"],
         discountValue: json["discountValue"],
+        details: json["details"],
         hasDiscount: json["hasDiscount"],
         id: json["id"],
       );
@@ -39,6 +41,7 @@ class EuropeanProductOk {
         "description": description,
         "price": price,
         "discountValue": discountValue,
+        "details": details,
         "hasDiscount": hasDiscount,
         "id": id,
       };
